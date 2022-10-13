@@ -131,4 +131,5 @@ dmypy.json
 # Custom
 dftrain.h5
 dfvalid.h5
-test.ipynb
+# dfvalid_groundtruth.csv
+# test.ipynb

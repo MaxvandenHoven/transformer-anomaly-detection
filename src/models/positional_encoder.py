@@ -8,9 +8,7 @@ class PositionalEncoder(nn.Module):
     Adapted from https://github.com/KasperGroesLudvigsen/influenza_transformer/blob/main/positional_encoder.py
     """
 
-    def __init__(
-        self, p_dropout: float = 0.1, max_seq_len: int = 5000, d_model: int = 512
-    ):
+    def __init__(self, p_dropout: float = 0.1, max_seq_len: int = 5000, d_model: int = 512):
         """
         Args:
             p_dropout (float, optional): Probability of dropout. Defaults to 0.1.
