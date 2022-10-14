@@ -157,6 +157,8 @@ class CustomTransformer(nn.Module):
 
         self.linear_mapping = nn.Linear(in_features=d_model, out_features=n_features)
 
+        self.activation = nn.Tanh()
+
     def forward(self, src: Tensor, src_mask: Tensor = None) -> Tensor:
         """
         Args:
@@ -174,6 +176,6 @@ class CustomTransformer(nn.Module):
 
         output, layer_attn_output_weights = self.transformer_encoder(src, src_mask)
 
-        output = self.linear_mapping(output) # TODO: activation
+        output = self.activation(self.linear_mapping(output))
 
         return output, layer_attn_output_weights
