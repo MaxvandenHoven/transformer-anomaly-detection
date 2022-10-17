@@ -5,7 +5,7 @@ from torch.utils.data import Dataset, DataLoader
 from ..utils import read_hdf5, split_windows
 
 class HelicopterTransformerDataset(Dataset):
-    def __init__(self, window_size: int = 512, valid: bool = False, device: str = "cpu"):
+    def __init__(self, window_size: int = 512, valid: bool = False):
         # Checkk that window size divides total sequence length for simplicity
         assert 61440 % window_size == 0, "Please select dividor of 61440 for window size."
 
@@ -25,7 +25,7 @@ class HelicopterTransformerDataset(Dataset):
         data = np.expand_dims(split_windows(data), -1)
 
         # Convert to tensor
-        self.data = Tensor(data).to(device)
+        self.data = Tensor(data)
 
     def __len__(self):
         return len(self.data)
@@ -35,10 +35,10 @@ class HelicopterTransformerDataset(Dataset):
 
 
 def get_helicopter_dataloaders(window_size: int = 512, batch_size: int = 128,
-        shuffle: bool = True, device: str = "cpu"):
+        shuffle: bool = True):
 
-    train_dataset = HelicopterTransformerDataset(window_size, valid=False, device=device)
-    valid_dataset = HelicopterTransformerDataset(window_size, valid=True, device=device)
+    train_dataset = HelicopterTransformerDataset(window_size, valid=False)
+    valid_dataset = HelicopterTransformerDataset(window_size, valid=True)
 
     return (
         DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle),
