@@ -133,3 +133,4 @@ dftrain.h5
 dfvalid.h5
 # dfvalid_groundtruth.csv
 # test.ipynb
+checkpoints/
