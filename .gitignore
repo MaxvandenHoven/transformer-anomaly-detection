@@ -134,3 +134,4 @@ dfvalid.h5
 # dfvalid_groundtruth.csv
 # test.ipynb
 checkpoints/
+checkpoints-complete/
