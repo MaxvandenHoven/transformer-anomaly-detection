@@ -16,8 +16,10 @@ def train_helicopter(
     mask_strategy: str,
     loss_strategy: str,
     random_mask_prop: float = 0.3,
-    noise_variance: float = 0.01,
+    noise_std: float = 0.1,
     epochs: int = 100,
+    checkpoints: int = 5,
+    save_prefix: str = "model",
     device: str = "cuda",
 ):    
     """_summary_
@@ -38,9 +40,11 @@ def train_helicopter(
             - "mask": loss is computed over masked inputs only
         random_mask_prop (float, optional): Probability that a point is masked. Only used 
             when mask_strategy contains "random". Defaults to 0.3.
-        noise_variance (float, optional): Variance of Gaussian noise added to masked 
+        noise_std (float, optional): Variance of Gaussian noise added to masked 
             inputs. Only used when mask_strategy contains "noise".
         epochs (int, optional): Number of epochs to train for. Defaults to 100.
+        checkpoint (int, optional): Checkpoint save interval.
+        save_prefix (str, optional): Prefix to identify model checkpoints.
         device (str, optional): Device to train on. Defaults to "cuda".
     """
     # Check configuration
@@ -84,7 +88,7 @@ def train_helicopter(
             if "zero" in mask_strategy:
                 batch_mask = batch * mask # Elements in mask set to False become 0
             elif "noise" in mask_strategy:
-                noise = (torch.randn_like(batch) * torch.sqrt(noise_variance)).to(device)
+                noise = (torch.randn_like(batch) * noise_std).to(device)
                 noise_mask = noise * mask
                 batch_mask = batch + noise_mask
 
@@ -144,7 +148,7 @@ def train_helicopter(
                 if "zero" in mask_strategy:
                     batch_mask = batch * mask # Elements in mask set to False become 0
                 elif "noise" in mask_strategy:
-                    noise = (torch.randn_like(batch) * torch.sqrt(noise_variance)).to(device)
+                    noise = (torch.randn_like(batch) * noise_std).to(device)
                     noise_mask = noise * mask
                     batch_mask = batch + noise_mask
 
@@ -172,4 +176,7 @@ def train_helicopter(
 
         # Tracking (TODO: tensorboard)
         print(f"Epoch {epoch+1}/{epochs}, Train loss: {train_loss}, Valid loss: {valid_loss}")
+
+        if (epoch + 1) % checkpoints == 0:
+            torch.save(model, f"{save_prefix}-helicopter-{mask_strategy}-{loss_strategy}-{epoch + 1}.save")
 
