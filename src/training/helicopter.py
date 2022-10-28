@@ -178,5 +178,5 @@ def train_helicopter(
         print(f"Epoch {epoch+1}/{epochs}, Train loss: {train_loss}, Valid loss: {valid_loss}")
 
         if (epoch + 1) % checkpoints == 0:
-            torch.save(model, f"{save_prefix}-helicopter-{mask_strategy}-{loss_strategy}-{epoch + 1}.save")
+            torch.save(model, f"checkpoints/{save_prefix}-helicopter-{mask_strategy}-{loss_strategy}-{epoch + 1}.save")
 
